@@ -14,6 +14,9 @@
 
 require_once 'Calculation.php';
 
+/**
+ * Format dan perhitungan tanggal PHP untuk Bahasa Indonesia
+ */
 class OstiumDate extends Calculation
 {
     /**
@@ -78,17 +81,7 @@ class OstiumDate extends Calculation
         }
 
         return $this->monthName[$mon];
-    }
-
-    protected function error($option, $hint)
-    {
-        $error = [
-            'date' => "Invalid date input: <b>" . $hint . "</b>",
-            'format' => "Invalid date format: <b>" . $hint . "</b",
-        ];
-
-        return $error[$option];
-    }
+    }    
 
     // --------------------------- DATE SETTER ----------------------------------------
 
