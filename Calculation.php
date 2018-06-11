@@ -12,7 +12,7 @@
  * @link		https://wolestech.com
  */
 
-class OstiumCalculation 
+class Calculation 
 {
     
 }

@@ -12,9 +12,9 @@
  * @link		https://wolestech.com
  */
 
-require_once 'OstiumCalculation.php';
+require_once 'Calculation.php';
 
-class OstiumDate extends OstiumCalculation
+class OstiumDate extends Calculation
 {
     /**
      * Pemanggil fungsi getdate()
