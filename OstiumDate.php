@@ -251,7 +251,7 @@ class OstiumDate extends Calculation
                 return $this->error('format', $hint);
             }
 
-            if($pattern[2] === 'y' OR $pattern[2] === 'Y')
+            if($pattern[2] === 'y' || $pattern[2] === 'Y')
             {
                 $output .= $separator . $year;
             }
@@ -301,7 +301,7 @@ class OstiumDate extends Calculation
      */
     protected function dateValidation($date, $month, $year)
     {
-        if($month > 12 OR $month < 1 OR $date > $this->daysInMonth($month, $year) OR $date < 1)
+        if($month > 12 || $month < 1 || $date > $this->daysInMonth($month, $year) || $date < 1)
         {
             return false;
         }
