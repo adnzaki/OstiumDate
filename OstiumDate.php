@@ -323,7 +323,7 @@ class OstiumDate extends Calculation
     {
         $totalDays = [
             1 => 31, 2 => $this->daysOfFebruary($year), 3 => 31,
-            4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 30,
+            4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31,
             9 => 30, 10 => 31, 11 => 30, 12 => 31
         ];
 
