@@ -95,13 +95,13 @@ Tipe output:
 Detil format: http://php.net/manual/en/dateinterval.format.php <br/>
 Eksekusi:<br/>
 ```
-echo $od->diff('01-01-2015', '02-05-2015', 'pn-days', 'a-b');
+echo $od->diff('01-01-2013', '02-05-2015', 'pn-days', 'a-b');
 # Output: +121 hari
 
-echo $od->diff('01-01-2015', '02-05-2015', 'pn-days', 'b-a');
+echo $od->diff('01-01-2013', '02-05-2015', 'pn-days', 'b-a');
 # Output: -121 hari
 
-echo $od->diff('01-01-2015', '02-05-2015', 'total-days');
+echo $od->diff('01-01-2013', '02-05-2015', 'total-days');
 # Output: 121 hari
 
 echo $od->diff('01-01-2013', '02-05-2015', 'y-m-d');
