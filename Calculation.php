@@ -139,15 +139,16 @@ class Calculation
      * 
      * @param string $date1 
      * @param string $date2 
-     * @param string $printIn | opsi tersedia: [pn-days, total-days, month, year, y-m-d, m-d, y-d, y-m]
-     * @param string $countFrom | opsi tersedia: [a-b, b-a]
+     * @param string $printIn Opsi tersedia: [pn-days, total-days, month, year, y-m-d, m-d, y-d, y-m]
+     * @param string $countFrom Opsi tersedia: [a-b, b-a], hanya untuk $printIn = 'pn-days
      */
     public function diff(string $date1, string $date2, string $printIn, $countFrom = 'a-b'): string 
     {
+        $dateString1 = reverse($date1, '-', '-');
+        $dateString2 = reverse($date2, '-', '-');
+
         $date1 = new DateTime(reverse($date1, '-', '-'));
         $date2 = new DateTime(reverse($date2, '-', '-'));
-
-        ($countFrom === 'a-b') ? $interval = $date1->diff($date2) : $interval = $date2->diff($date1);
 
         switch ($printIn) {
             case 'pn-days': $outputText = '%R%a hari'; break;
@@ -159,6 +160,17 @@ class Calculation
             case 'y-d': $outputText = '%y tahun, %d hari'; break;
             case 'y-m': $outputText = '%y tahun, %m bulan'; break;
             default: $outputText = 'Format tidak tersedia'; break;
+        }
+        
+        if($printIn === 'pn-days')
+        {
+            ($countFrom === 'a-b') ? $interval = $date1->diff($date2) : $interval = $date2->diff($date1);
+        }
+        else 
+        {
+            $toTime1 = strtotime($dateString1);
+            $toTime2 = strtotime($dateString2);
+            ($toTime1 > $toTime2) ? $interval = $date1->diff($date2) : $interval = $date2->diff($date1);
         }
 
         return $interval->format($outputText);
