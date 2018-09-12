@@ -12,7 +12,7 @@
  * @link		https://wolestech.com
  */
 
-require_once 'Calculation.php';
+require_once 'OstiumDate/Calculation.php';
 
 /**
  * Format dan perhitungan tanggal PHP untuk Bahasa Indonesia
