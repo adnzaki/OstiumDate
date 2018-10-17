@@ -23,7 +23,7 @@ Mencetak tanggal dengan tampilan ringkas:<br>
 $od->shortDate() # argumen kosong menampilkan hari ini denga pemisah tanggal default '-'
 # Output: 13-06-2018
 
-$od->fullDate(2, 3, 2017, '/') # dengan pemisah tanggal sesuai input
+$od->shortDate(2, 3, 2017, '/') # dengan pemisah tanggal sesuai input
 # Output: 02/03/2017
 ```
 
