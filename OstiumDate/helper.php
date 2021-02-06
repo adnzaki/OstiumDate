@@ -1,22 +1,25 @@
 <?php 
 
-function reverse($word, $separator, $newSeparator = '')
+if(! function_exists('reverse'))
 {
-    $explode = explode($separator, $word);
-    $reverseWord = '';
-    $lastIndex = count($explode) - 1;
-    for($i = 0; $i < count($explode); $i++)
+    function reverse($word, $separator, $newSeparator = '')
     {
-        if(count($explode) === 1)
+        $explode = explode($separator, $word);
+        $reverseWord = '';
+        $lastIndex = count($explode) - 1;
+        for($i = 0; $i < count($explode); $i++)
         {
-            $reverseWord .= $explode[$i];
+            if(count($explode) === 1)
+            {
+                $reverseWord .= $explode[$i];
+            }
+            else
+            {
+                $i === 0 ? $j = $lastIndex : $j = $lastIndex - $i;
+                $reverseWord .= $explode[$j] . $newSeparator;
+            }
         }
-        else
-        {
-            $i === 0 ? $j = $lastIndex : $j = $lastIndex - $i;
-            $reverseWord .= $explode[$j] . $newSeparator;
-        }
+    
+        return substr($reverseWord, 0, strlen($reverseWord) - 1);
     }
-
-    return substr($reverseWord, 0, strlen($reverseWord) - 1);
 }

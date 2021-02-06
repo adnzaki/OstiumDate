@@ -85,6 +85,7 @@ Menghitung selisih hari/bulan/tahun: <br/>
 Tipe output:
 'pn-days' = positive-negative days, menghasilkan format output '%R%a hari'
 'total-days' = '%a hari'
+'num-only' = '%a'
 'month' = '%m bulan'
 'year' = '%y tahun'
 'y-m-d' = '%y tahun, %m bulan, %d hari'
