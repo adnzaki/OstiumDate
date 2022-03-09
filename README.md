@@ -14,6 +14,9 @@ Mencetak tanggal dengan tampilan lengkap:<br>
 $od->fullDate() # argumen kosong menampilkan hari ini
 # Output: Rabu, 13 Juni 2018
 
+$od->fullDate('', '', '', false) # menampilkan hari ini tanpa disertai nama hari
+# Output: 13 Juni 2018
+
 $od->fullDate(2, 3, 2017)
 # Output: Kamis, 2 Maret 2017
 ```
