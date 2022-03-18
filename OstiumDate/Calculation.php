@@ -21,7 +21,7 @@ class Calculation
      * Fungsi untuk menambah jumlah hari pada tanggal 
      * 
      * @param string $date now | dd-mm-yyyy
-     * @param string|array $nums
+     * @param string|int|array $nums
      * 
      * @return string
      */
