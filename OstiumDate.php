@@ -10,9 +10,10 @@
  * @category	Libraries
  * @author		Adnan Zaki
  * @link		https://wolestech.com
+ * @version     2.0.0
  */
 
-require_once 'OstiumDate/Calculation.php';
+require_once 'helper/Calculation.php';
 
 /**
  * Format dan perhitungan tanggal PHP untuk Bahasa Indonesia
@@ -75,8 +76,7 @@ class OstiumDate extends Calculation
      */
     public function getMonthName($mon = '')
     {
-        if(empty($mon))
-        {
+        if(empty($mon)) {
             $mon = $this->date['mon'];
         }
 
@@ -99,22 +99,16 @@ class OstiumDate extends Calculation
      */
     public function fullDate($date = '', $month = '', $year ='', $useDay = true)
     {
-        if(empty($date) && empty($month) && empty($year))
-        {
+        if(empty($date) && empty($month) && empty($year)) {
             $day = $this->getDayName();
             $date = $this->date['mday'];
             $month = $this->getMonthName();
             $year = $this->date['year'];
-        }
-        else
-        {
-            if(! $this->dateValidation($date, $month, $year))
-            {
+        } else {
+            if(! $this->dateValidation($date, $month, $year)) {
                 $hint = $date . "-" . $month . "-" . $year;
                 return $this->error('date', $hint);
-            }
-            else
-            {
+            } else {
                 $date = intval($date);
                 $month = intval($month);
                 $day = $this->setDay($date, $month, $year);
@@ -142,8 +136,7 @@ class OstiumDate extends Calculation
      */
     public function shortDate($date = '', $month = '', $year = '', $separator = '-')
     {
-        if(empty($date) && empty($month) && empty($year))
-        {
+        if(empty($date) && empty($month) && empty($year)) {
             $mon = $this->date['mon'];
             $mon < 10 ? $mon = '0' . $mon : $mon = $mon;
 
@@ -151,16 +144,11 @@ class OstiumDate extends Calculation
             $monthDay < 10 ? $monthDay = '0' . $monthDay : $monthDay = $monthDay;
 
             return $monthDay . $separator . $mon . $separator . $this->date['year'];
-        }
-        else
-        {
-            if(! $this->dateValidation($date, $month, $year))
-            {
+        } else {
+            if(! $this->dateValidation($date, $month, $year)) {
                 $hint = $date . "-" . $month . "-" . $year;
                 return $this->error('date', $hint);
-            }
-            else
-            {
+            } else {
                 $date   = intval($date);
                 $month  = intval($month);
                 $date < 10 ? $date = 0 . $date : $date = $date;
@@ -169,6 +157,36 @@ class OstiumDate extends Calculation
 
             return $date . $separator . $month . $separator . $year;
         }
+    }
+
+    /**
+     * Method ini memiliki fungsi yang sama dengan $this->format(),
+     * hanya saja method ini menerima input $date sesuai dengan
+     * standar tanggal PHP, sehingga pengguna tidak perlu
+     * menjalankan fungsi reverse() terlebih dahulu agar tanggal
+     * yang dihasilkan PHP dapat diformat oleh OstiumDate.
+     * 
+     * @param string $date
+     * @param string $pattern
+     * @param string $separator
+     * 
+     * @return string
+     */
+    public function create(string $date = '', string $pattern = 'd-MM-y', string $separator = ' '): string
+    {       
+        if(empty($date)) {
+            $day = $this->date['mday'];
+            $month = $this->date['mon'];
+            $year = $this->date['year'];
+        } else {
+            $date   = explode("-", $date);
+            $day    = intval($date[2]);
+            $month  = intval($date[1]);
+            $year   = $date[0];
+
+        }
+        
+        return $this->createFormattedDate($day, $month, $year, $pattern, $separator);
     }
 
     /**
@@ -182,7 +200,9 @@ class OstiumDate extends Calculation
      * @param string $pattern
      * @param string $date
      * @param string $separator
+     * 
      * @return string
+     * @deprecated
      */
     public function format($pattern, $date, $separator = " ")
     {
@@ -191,75 +211,55 @@ class OstiumDate extends Calculation
         $month  = intval($date[1]);
         $year   = $date[2];
         
-        if(! $this->dateValidation($day, $month, $year))
-        {
+        return $this->createFormattedDate($day, $month, $year, $pattern, $separator);        
+    }
+
+    private function createFormattedDate($day, $month, $year, $pattern, $separator): string
+    {
+        if(! $this->dateValidation($day, $month, $year)) {
             $hint = $day . "-" . $month . "-" . $year;
             return $this->error('date', $hint);
-        }
-        elseif(! strpos($pattern, '-'))
-        {
+        } elseif(! strpos($pattern, '-')) {
             return $this->error('format', $pattern);
-        }
-        else
-        {
+        } else {
             $pattern = explode("-", $pattern);
-            if(count($pattern) < 3)
-            {
+            if(count($pattern) < 3) {
                 $hint = $pattern[0];
-            }
-            else
-            {
+            } else {
                 $hint = $pattern[0] . "-" . $pattern[1] . "-" . $pattern[2];
             }
 
-            if($pattern[0] === 'd')
-            {
+            if($pattern[0] === 'd') {
                 $day < 10 ? $day = 0 . $day : $day = $day;
                 $output = $day;
-            }
-            elseif($pattern[0] === 'D')
-            {
+            } elseif($pattern[0] === 'D') {
                 $dayName = $this->setDay($day, $month, $year);
                 $dayName = substr($dayName, 0, 3);
                 $output = $dayName . ", " . $day;
-            }
-            elseif($pattern[0] === 'DD')
-            {
+            } elseif($pattern[0] === 'DD') {
                 $dayName = $this->setDay($day, $month, $year);
                 $output = $dayName . ", " . $day;
-            }
-            else
-            {
+            } else {
                 return $this->error('format', $hint);
             }
 
-            if($pattern[1] === 'm')
-            {
+            if($pattern[1] === 'm') {
                 $month < 10 ? $month = '0' . $month : $month = $month;
                 $output .= $separator . $month;
-            }
-            elseif($pattern[1] === 'M')
-            {
+            } elseif($pattern[1] === 'M') {
                 $month = $this->getMonthName($month);
                 $month = substr($month, 0, 3);
                 $output .= $separator . $month;
-            }
-            elseif($pattern[1] === 'MM')
-            {
+            } elseif($pattern[1] === 'MM') {
                 $month = $this->getMonthName($month);
                 $output .= $separator . $month;
-            }
-            else
-            {
+            } else {
                 return $this->error('format', $hint);
             }
 
-            if($pattern[2] === 'y' || $pattern[2] === 'Y')
-            {
+            if($pattern[2] === 'y' || $pattern[2] === 'Y') {
                 $output .= $separator . $year;
-            }
-            else
-            {
+            } else {
                 return $this->error('format', $hint);
             }
         }
@@ -301,8 +301,7 @@ class OstiumDate extends Calculation
     protected function setDay($date, $month, $year)
     {
         $day = date("l", mktime(0,0,0, $month, $date, $year));
-        switch($day)
-        {
+        switch($day) {
             case 'Sunday':      $day = $this->dayName[0]; break;
             case 'Monday':      $day = $this->dayName[1]; break;
             case 'Tuesday':     $day = $this->dayName[2]; break;
@@ -326,8 +325,9 @@ class OstiumDate extends Calculation
      */
     protected function dateValidation($date, $month, $year)
     {
-        if($month > 12 || $month < 1 || $date > $this->daysInMonth($month, $year) || $date < 1)
-        {
+        if($month > 12 || $month < 1 
+            || $date > $this->daysInMonth($month, $year) 
+            || $date < 1) {
             return false;
         }
         else

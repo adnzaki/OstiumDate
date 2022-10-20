@@ -54,40 +54,28 @@ class Calculation
      */
     private function calculate(string $type, string $date = 'now', $nums = ''): string
     {
-        if(empty($nums))
-        {
+        if(empty($nums)) {
             return $this->error('empty');
-        }
-        else 
-        {
-            if($date === 'now')
-            {
+        } else {
+            if($date === 'now') {
                 $date = date('Y-m-d');
-            }
-            else 
-            {
+            } else {
                 $date = reverse($date, '-', '-');
             }
 
             // cek tipe data $nums untuk membuat interval
-            if(gettype($nums) === 'integer')
-            {
+            if(gettype($nums) === 'integer') {
                 $interval = new DateInterval('P'.(string)$nums.'D');
-            }
-            elseif(gettype($nums) === 'array')
-            {
-                if(! array_key_exists('d', $nums))
-                {
+            } elseif(gettype($nums) === 'array') {
+                if(! array_key_exists('d', $nums)) {
                     $nums['d'] = 0;
                 }
 
-                if(! array_key_exists('m', $nums))
-                {
+                if(! array_key_exists('m', $nums)) {
                     $nums['m'] = 0;
                 }
 
-                if(! array_key_exists('y', $nums))
-                {
+                if(! array_key_exists('y', $nums)) {
                     $nums['y'] = 0;
                 }
 
@@ -100,12 +88,9 @@ class Calculation
             }
 
             $dt = new DateTime($date);   
-            if($type === 'add')
-            {
+            if($type === 'add') {
                 $dt->add($interval);
-            }
-            else
-            {
+            } else {
                 $dt->sub($interval);
             }
 
@@ -144,12 +129,9 @@ class Calculation
             default: $outputText = 'Format tidak tersedia'; break;
         }
         
-        if($printIn === 'pn-days')
-        {
+        if($printIn === 'pn-days') {
             ($countFrom === 'a-b') ? $interval = $date1->diff($date2) : $interval = $date2->diff($date1);
-        }
-        else 
-        {
+        } else {
             $toTime1 = strtotime($dateString1);
             $toTime2 = strtotime($dateString2);
             ($toTime1 > $toTime2) ? $interval = $date1->diff($date2) : $interval = $date2->diff($date1);

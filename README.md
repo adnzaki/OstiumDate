@@ -31,20 +31,41 @@ $od->shortDate(2, 3, 2017, '/') # dengan pemisah tanggal sesuai input
 ```
 
 Mencetak tanggal dengan <i>custom format:</i><br>
+Terdapat 2 method untuk memformat tanggal secara kustom, yaitu
+dengan `$od->format()` dan `$od->create()`. Kami menyarankan anda untuk 
+menggunakan method `$od->create()` yang sudah menyesuaikan dengan standar
+format tanggal yang dihasilkan PHP sehingga anda tidak perlu menggunakan
+fungsi `reverse()` terlebih dahulu untuk mengolah tanggal yang dihasilkan
+oleh PHP ke dalam OstiumDate. Sementara method `$od->format()` akan dihapus pada versi
+berikutnya dari OstiumDate.
 ```
 Format tanggal khusus dengan pilihan format d, D, DD, m, M, MM, Y
 Contoh: 'd' = 26, 'D' = Sen, 26, 'DD' = Senin, 26
         'm' = 12, 'M' = Des, MM = Desember, y atau Y = 2016
 
+
 Contoh eksekusi:
 $od->format('D-M-Y', '1-9-2016', '-')
+=== atau ===
+$od->create('2016-09-01', 'D-M-Y', '-')
 # Output: Kam, 1-Sep-2016
 
 $od->format('DD-MM-Y', '1-9-2016', '-')
+=== atau ===
+$od->create('2016-09-01', 'DD-MM-Y', '-')
 # Output: Kamis, 1-September-2016
 
-$od->format('d-MM-Y', '1-9-2016') # dengan pemisah tanggal default menggunakan spasi
+$od->format('d-MM-Y', '1-9-2016')
+=== atau === 
+$od->create('2016-09-01', 'd-MM-Y') 
+
+# dengan pemisah tanggal default menggunakan spasi
 # Output: 1 September 2016
+
+Dengan method create(), anda bisa membiarkan semua argumen kosong
+untuk menampilkan tanggal hari ini dengan format dan pemisah default.
+$od->create()
+# Output: 20 Oktober 2022
 ```
 
 Menambahkan jumlah hari/bulan/tahun:<br/>

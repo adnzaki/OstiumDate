@@ -1,20 +1,23 @@
 <?php 
 
-require_once 'OstiumDate.php';
+require 'OstiumDate.php';
 
 $od = new OstiumDate();
 
-// Menambahkan 1 bulan dari tanggal 1 Agustus 2012
+// Menampilkan hari ini dengan format tanggal dan pemisah default
+echo '<h1>halooooo</h1>';
+echo $od->create();
+echo '<br/>';
+
+// Menambahkan 2 tahun 3 bulan 10 hari dari 1 Januari 2012
 $add = $od->add('01-01-2012', ['y' => 2, 'm' => 3, 'd' => 10]);
 echo $od->format('DD-MM-y', $add);
-// Output: Sabtu, 1 September 2012
 
 echo '<br/>';
 
-// Mengurangi 3 hari dari tanggal 1 Agustus 2012
+// Mengurangi 4 hari dari hari ini
 $sub = $od->sub('now', 4);
 echo $od->format('DD-MM-y', $sub);
-// Output: Minggu, 29 Juli 2012
 
 echo '<br/>';
 
