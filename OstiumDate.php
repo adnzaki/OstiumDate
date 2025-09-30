@@ -1,8 +1,8 @@
 <?php
 
 /**
- * OstiumDate 
- * Pustaka format dan perhitungan tanggal untuk Bahasa Indonesia 
+ * OstiumDate
+ * Pustaka format dan perhitungan tanggal untuk Bahasa Indonesia
  * Pustaka ini diambil dari project OstiumCMS milik Adnan Zaki, web developer Wolestech
  *
  * @package		Application
@@ -56,6 +56,89 @@ class OstiumDate extends Calculation
         $this->date = getdate();
     }
 
+	/**
+     * Retrieves the next month based on the given date and result format.
+     *
+     * @param string $date The date in the format 'YYYY-MM-DD'.
+     * @param string $resultFormat The format of the result. Allowed values are:
+     *                             - 'm': month only
+     *                             - 'y': year only
+     *                             - 'ym': year and month -> 2016-12
+     *                             - 'ld': last date of month
+     *                             - 'fsd': full start date of month
+     *                             - 'fld': full last date of month
+     *                             - 'all': returns an array with all the formats
+     *
+     * @return mixed The next month in the specified format or an array with all the formats.
+     */
+	public function getNextMonth(string $date, string $resultFormat)
+	{
+		$dateArray = explode('-', $date);
+		$month = (int)$dateArray[1];
+		$year = $dateArray[0];
+
+		$nextMonth = $month < 12 ? $month + 1 : 1;
+
+		$year = $month < 12 ? $year : $year + 1;
+
+		$nextMonthStr = $nextMonth < 10 ? '0' . $nextMonth : $nextMonth;
+
+		$result = [
+			'm' 	=> $nextMonthStr, // month only
+			'y' 	=> $year, // year only
+			'ym' 	=> $year . '-' . $nextMonthStr, // year and month -> 2016-12
+			'ld' 	=> $this->daysInMonth($nextMonth, $year), // last date of month
+			'fsd'	=> $year . '-' . $nextMonthStr . '-01', // full start date of month
+			'fld'	=> $year . '-' . $nextMonthStr . '-' . $this->daysInMonth($nextMonth, $year), // full last date of month
+		];
+
+		return $resultFormat === 'all' ? $result : $result[$resultFormat];
+	}
+
+	/**
+     * Retrieves the previous month based on the given date and result format.
+     *
+     * @param string $date The date in the format 'YYYY-MM-DD'.
+     * @param string $resultFormat The format of the result. Allowed values are:
+     *                             - 'm': month only
+     *                             - 'y': year only
+     *                             - 'ym': year and month -> 2016-12
+     *                             - 'ld': last date of month
+     *                             - 'fsd': full start date of month
+     *                             - 'fld': full last date of month
+     *                             - 'all': returns an array with all the formats
+     *
+     * @return mixed The previous month in the specified format or an array with all the formats.
+     */
+	public function getPreviousMonth(string $date, string $resultFormat)
+	{
+		// Extract the month and year from the given date
+		$dateArray = explode('-', $date);
+		$month = (int)$dateArray[1];
+		$year = $dateArray[0];
+
+		// Calculate the previous month
+		$previousMonth = $month > 1 ? $month - 1 : 12;
+
+		// Calculate the previous year if the month is January
+		$year = $month > 1 ? $year : $year - 1;
+
+		$previousMonthStr = $previousMonth < 10 ? '0' . $previousMonth : $previousMonth;
+
+		// Create an array with the results in different formats
+		$result = [
+			'm' 	=> $previousMonthStr, // month only
+			'y' 	=> $year, // year only
+			'ym' 	=> $year . '-' . $previousMonthStr, // year and month -> 2016-12
+			'ld' 	=> $this->daysInMonth($previousMonth, $year), // last date of month
+			'fsd'	=> $year . '-' . $previousMonthStr . '-01', // full start date of month
+			'fld'	=> $year . '-' . $previousMonthStr . '-' . $this->daysInMonth($previousMonth, $year), // full last date of month
+		];
+
+		// Return the result based on the requested format
+		return $resultFormat === 'all' ? $result : $result[$resultFormat];
+	}
+
     /**
      * Mengambil nama hari ini
      *
@@ -81,7 +164,7 @@ class OstiumDate extends Calculation
         }
 
         return $this->monthName[$mon];
-    }    
+    }
 
     // --------------------------- DATE SETTER ----------------------------------------
 
@@ -165,27 +248,33 @@ class OstiumDate extends Calculation
      * standar tanggal PHP, sehingga pengguna tidak perlu
      * menjalankan fungsi reverse() terlebih dahulu agar tanggal
      * yang dihasilkan PHP dapat diformat oleh OstiumDate.
-     * 
+     *
      * @param string $date
      * @param string $pattern
      * @param string $separator
-     * 
+     *
      * @return string
      */
     public function create(string $date = '', string $pattern = 'd-MM-y', string $separator = ' '): string
-    {       
+    {
         if(empty($date)) {
             $day = $this->date['mday'];
             $month = $this->date['mon'];
             $year = $this->date['year'];
         } else {
+            // validate date format that should contains YYYY-MM-DD
+            // the format still valid if there is another string after the date
+            if (! preg_match('/^\d{4}-\d{2}-\d{2}/', $date)) {
+                return $this->error('date', $date);
+            }
+
             $date   = explode("-", $date);
             $day    = intval($date[2]);
             $month  = intval($date[1]);
             $year   = $date[0];
 
         }
-        
+
         return $this->createFormattedDate($day, $month, $year, $pattern, $separator);
     }
 
@@ -200,7 +289,7 @@ class OstiumDate extends Calculation
      * @param string $pattern
      * @param string $date
      * @param string $separator
-     * 
+     *
      * @return string
      * @deprecated
      */
@@ -210,8 +299,8 @@ class OstiumDate extends Calculation
         $day    = intval($date[0]);
         $month  = intval($date[1]);
         $year   = $date[2];
-        
-        return $this->createFormattedDate($day, $month, $year, $pattern, $separator);        
+
+        return $this->createFormattedDate($day, $month, $year, $pattern, $separator);
     }
 
     private function createFormattedDate($day, $month, $year, $pattern, $separator): string
@@ -275,7 +364,7 @@ class OstiumDate extends Calculation
      *
      * @param int $month
      * @param int $year
-     * 
+     *
      * @return int
      */
     public function daysInMonth($month, $year)
@@ -325,8 +414,8 @@ class OstiumDate extends Calculation
      */
     protected function dateValidation($date, $month, $year)
     {
-        if($month > 12 || $month < 1 
-            || $date > $this->daysInMonth($month, $year) 
+        if($month > 12 || $month < 1
+            || $date > $this->daysInMonth($month, $year)
             || $date < 1) {
             return false;
         }
