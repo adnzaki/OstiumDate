@@ -12,9 +12,6 @@
  * @link		https://wolestech.com
  */
 
-
-require_once 'helper.php';
-
 class Calculation 
 {
     /**
@@ -32,7 +29,7 @@ class Calculation
 
     /**
      * Fungsi untuk mengurangi jumlah hari pada tanggal 
-     * 
+     * re
      * @param string $date now | dd-mm-yyyy
      * @param string|array $nums
      * 
@@ -59,9 +56,7 @@ class Calculation
         } else {
             if($date === 'now') {
                 $date = date('Y-m-d');
-            } else {
-                $date = reverse($date, '-', '-');
-            }
+            } 
 
             // cek tipe data $nums untuk membuat interval
             if(gettype($nums) === 'integer') {
@@ -94,7 +89,7 @@ class Calculation
                 $dt->sub($interval);
             }
 
-            return $dt->format('d-m-Y');         
+            return $dt->format('Y-m-d');         
         }
     }
 
@@ -110,11 +105,11 @@ class Calculation
      */
     public function diff(string $date1, string $date2, string $printIn, $countFrom = 'a-b'): string 
     {
-        $dateString1 = reverse($date1, '-', '-');
-        $dateString2 = reverse($date2, '-', '-');
+        $dateString1 = $date1;
+        $dateString2 = $date2;
 
-        $date1 = new DateTime(reverse($date1, '-', '-'));
-        $date2 = new DateTime(reverse($date2, '-', '-'));
+        $date1 = new DateTime($date1);
+        $date2 = new DateTime($date2);
 
         switch ($printIn) {
             case 'pn-days': $outputText = '%R%a hari'; break;
@@ -122,10 +117,10 @@ class Calculation
             case 'num-only': $outputText = '%a'; break;
             case 'month': $outputText = '%m bulan'; break;
             case 'year': $outputText = '%y tahun'; break;
-            case 'y-m-d': $outputText = '%y tahun, %m bulan, %d hari'; break;
-            case 'm-d': $outputText = '%m bulan, %d hari'; break;
-            case 'y-d': $outputText = '%y tahun, %d hari'; break;
-            case 'y-m': $outputText = '%y tahun, %m bulan'; break;
+            case 'y-m-d': $outputText = '%y tahun %m bulan %d hari'; break;
+            case 'm-d': $outputText = '%m bulan %d hari'; break;
+            case 'y-d': $outputText = '%y tahun %d hari'; break;
+            case 'y-m': $outputText = '%y tahun %m bulan'; break;
             default: $outputText = 'Format tidak tersedia'; break;
         }
         

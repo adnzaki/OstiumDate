@@ -30,14 +30,8 @@ $od->shortDate(2, 3, 2017, '/') # dengan pemisah tanggal sesuai input
 # Output: 02/03/2017
 ```
 
-Mencetak tanggal dengan <i>custom format:</i><br>
-Terdapat 2 method untuk memformat tanggal secara kustom, yaitu
-dengan `$od->format()` dan `$od->create()`. Kami menyarankan anda untuk 
-menggunakan method `$od->create()` yang sudah menyesuaikan dengan standar
-format tanggal yang dihasilkan PHP sehingga anda tidak perlu menggunakan
-fungsi `reverse()` terlebih dahulu untuk mengolah tanggal yang dihasilkan
-oleh PHP ke dalam OstiumDate. Sementara method `$od->format()` akan dihapus pada versi
-berikutnya dari OstiumDate.
+Mencetak tanggal dengan <i>custom format</i> dapat dilakukan dengan menggunakan method `$od->create()`<br>
+
 ```
 Format tanggal khusus dengan pilihan format d, D, DD, m, M, MM, Y
 Contoh: 'd' = 26, 'D' = Sen, 26, 'DD' = Senin, 26
@@ -70,19 +64,19 @@ $od->create()
 
 Menambahkan jumlah hari/bulan/tahun:<br/>
 ```
-# Menambahkan 4 hari dari hari ini
+# Menambahkan 4 hari dari hari ini (Asumsi hari ini: 13 Juni 2018)
 $add = $od->add('now', 4);
-echo $od->format('DD-MM-Y', $add);
+echo $od->create($add, 'DD-MM-Y');
 # Output: Minggu, 17 Juni 2018
 
 # Menambahkan 3 bulan 10 hari dari tanggal 1 Januari 2012
 $add = $od->add('01-01-2012', ['m' => 3, 'd' => 10]);
-echo $od->format('DD-MM-y', $add);
+echo $od->create($add, 'DD-MM-y');
 # Output: Rabu, 11 April 2012
 
 # Menambahkan 2 tahun 3 bulan 10 hari dari tanggal 1 Januari 2012
 $add = $od->add('01-01-2012', ['y' => 2, 'm' => 3, 'd' => 10]);
-echo $od->format('DD-MM-y', $add);
+echo $od->create($add, 'DD-MM-y');
 # Output: Jumat, 11 April 2014
 ```
 
@@ -90,17 +84,17 @@ Mengurangi jumlah hari/bulan/tahun:<br/>
 ```
 # Mengurangi 4 hari dari hari ini
 $sub = $od->sub('now', 4);
-echo $od->format('DD-MM-Y', $sub);
+echo $od->create($sub, 'DD-MM-Y');
 # Output: Sabtu, 9 Juni 2018
 
 # Mengurangi 3 bulan 10 hari dari tanggal 1 Januari 2012
 $sub = $od->sub('01-01-2012', ['m' => 3, 'd' => 10]);
-echo $od->format('DD-MM-y', $sub);
+echo $od->create($sub, 'DD-MM-y');
 # Output: Rabu, 21 September 2011
 
 # Mengurangi 2 tahun 3 bulan 10 hari dari tanggal 1 Januari 2012
 $sub = $od->sub('01-01-2012', ['y' => 2, 'm' => 3, 'd' => 10]);
-echo $od->format('DD-MM-y', $sub);
+echo $od->create($sub, 'DD-MM-y');
 # Output: Senin, 21 September 2009
 ```
 
@@ -112,10 +106,10 @@ Tipe output:
 'num-only' = '%a'
 'month' = '%m bulan'
 'year' = '%y tahun'
-'y-m-d' = '%y tahun, %m bulan, %d hari'
-'m-d' = '%m bulan, %d hari'
-'y-d' = '%y tahun, %d hari'
-'y-m' = '%y tahun, %m bulan'
+'y-m-d' = '%y tahun %m bulan %d hari'
+'m-d' = '%m bulan %d hari'
+'y-d' = '%y tahun %d hari'
+'y-m' = '%y tahun %m bulan'
 ```
 Detil format: http://php.net/manual/en/dateinterval.format.php <br/>
 Eksekusi:<br/>

@@ -13,7 +13,7 @@
  * @version     2.0.0
  */
 
-require_once 'helper/Calculation.php';
+require_once 'Calculation.php';
 
 /**
  * Format dan perhitungan tanggal PHP untuk Bahasa Indonesia
@@ -243,11 +243,9 @@ class OstiumDate extends Calculation
     }
 
     /**
-     * Method ini memiliki fungsi yang sama dengan $this->format(),
-     * hanya saja method ini menerima input $date sesuai dengan
-     * standar tanggal PHP, sehingga pengguna tidak perlu
-     * menjalankan fungsi reverse() terlebih dahulu agar tanggal
-     * yang dihasilkan PHP dapat diformat oleh OstiumDate.
+     * Format tanggal khusus dengan pilihan format d, D, Dd, m, M, Mm, Y
+     * Contoh: 'd' = 26, 'D' = Sen, 26, 'DD' = Senin, 26
+     *         'm' = 12, 'M' = Des, MM = Desember, y atau Y = 2016
      *
      * @param string $date
      * @param string $pattern
@@ -274,31 +272,6 @@ class OstiumDate extends Calculation
             $year   = $date[0];
 
         }
-
-        return $this->createFormattedDate($day, $month, $year, $pattern, $separator);
-    }
-
-    /**
-     * Format tanggal khusus dengan pilihan format d, D, Dd, m, M, Mm, Y
-     * Contoh: 'd' = 26, 'D' = Sen, 26, 'DD' = Senin, 26
-     *         'm' = 12, 'M' = Des, MM = Desember, y atau Y = 2016
-     * Contoh eksekusi: format('D-M-Y', '1-9-2016', '-')
-     * akan menampilkan hasil: Kam, 1-Sep-2016
-     * => argumen ke-3 akan menghasilkan spasi jika dikosongkan
-     *
-     * @param string $pattern
-     * @param string $date
-     * @param string $separator
-     *
-     * @return string
-     * @deprecated
-     */
-    public function format($pattern, $date, $separator = " ")
-    {
-        $date   = explode("-", $date);
-        $day    = intval($date[0]);
-        $month  = intval($date[1]);
-        $year   = $date[2];
 
         return $this->createFormattedDate($day, $month, $year, $pattern, $separator);
     }
