@@ -15,6 +15,33 @@
 class Calculation 
 {
     /**
+     * Checks if the given date is between the start and end dates.
+     *
+     * @param string $checkDate The date to check.
+     * @param string $startDate The start date.
+     * @param string $endDate The end date.
+     *
+     * @return bool Returns true if the date is between the start and end dates, false otherwise.
+     */
+    public function between(string $checkDate, string $startDate, string $endDate): bool
+    {
+        return strtotime($startDate) <= strtotime($checkDate) && strtotime($checkDate) <= strtotime($endDate);
+    }
+
+    /**
+     * Check if the given date is the same as the check date.
+     *
+     * @param string $date The date to check.
+     * @param string $checkDate The date to compare against.
+     *
+     * @return bool Returns true if the dates are the same, false otherwise.
+     */
+    public function is(string $date, string $checkDate): bool
+    {
+        return strtotime($checkDate) === strtotime($date);
+    }
+    
+    /**
      * Fungsi untuk menambah jumlah hari pada tanggal 
      * 
      * @param string $date now | dd-mm-yyyy
